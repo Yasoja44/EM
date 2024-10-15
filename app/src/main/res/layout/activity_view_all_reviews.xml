@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background1"
+    tools:context=".ViewAllReviews">
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/r1"
+            android:layout_width="match_parent"
+            android:layout_height="694dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/review_view_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reviews"
+                android:textColor="@color/black"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/search_reviews_all"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/review_view_all"
+                android:layout_margin="5dp"
+                android:background="@drawable/search"
+                android:drawableStart="@drawable/search_img"
+                android:hint="Search"
+                android:padding="15dp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_reviews_all"
+                android:layout_marginTop="20dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/card_recycleView_reviews_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
+            </ScrollView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/float_add_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+
+                    android:foreground="@android:drawable/ic_input_add"
+                    app:backgroundTint="@color/backgroundBottomColor"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
+                    />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
