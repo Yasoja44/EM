@@ -1,12 +1,11 @@
 package com.example.test;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,13 +14,11 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,82 +29,55 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageContract;
+import com.canhub.cropper.CropImageContractOptions;
+import com.canhub.cropper.CropImageOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import android.Manifest;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class AddMovies extends AppCompatActivity {
-    EditText name, desc, date, genre;
-    DatePickerDialog datePickerDialog;
-    Button dateBtn, addMovieBtn;
-    FirebaseFirestore fStory;
+public class Camera extends AppCompatActivity {
 
-    ImageView image;
-    ImageButton btnPic, btnGallery;
-    String currentPhotoPath;
-    StorageReference storageReference;
+
     public static final int REQUEST_CODE1 = 1;
     public static final int REQUEST_CODE_CAMERA = 2;
     private static final int REQUEST_GALLERY = 5;
-    String movieUri;
+    ImageView image;
+    Button btnPic, btnGallery;
+    String currentPhotoPath;
+
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_movies);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
-        initDatePicker();
-        dateBtn = findViewById(R.id.date_button);
-        name = findViewById(R.id.movie_name);
-        desc = findViewById(R.id.movie_desc);
-        genre = findViewById(R.id.movie_genre);
-        addMovieBtn = findViewById(R.id.add_movie_button);
-        dateBtn.setText(getTodaysDate());
-        fStory = FirebaseFirestore.getInstance();
-
+        setContentView(R.layout.activity_camera);
         image = findViewById(R.id.image);
-        btnPic = findViewById(R.id.cameraButton);
-        btnGallery = findViewById(R.id.galleryButton);
-
-        addMovieBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CollectionReference df = fStory.collection("Movies");
-                Map<String, Object> movieInfo = new HashMap<>();
-                movieInfo.put("MovieName", name.getText().toString());
-                movieInfo.put("MovieDesc", desc.getText().toString());
-                movieInfo.put("MovieReleaseDate", dateBtn.getText().toString());
-                movieInfo.put("MovieGenre", genre.getText().toString());
-                movieInfo.put("MoviePic", movieUri);
-
-                df.add(movieInfo);
-            }
-        });
-
-        ///////////////////////////////////////////////////////////
+        btnPic = findViewById(R.id.cameraBtn);
+        btnGallery = findViewById(R.id.galleryBtn);
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
         btnPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //startActivityForResult(cameraIntent, REQUEST_CODE);
+
                 askCameraPermission();
+
+
             }
         });
 
@@ -119,79 +89,6 @@ public class AddMovies extends AppCompatActivity {
             }
         });
     }
-
-    //--------------DATE----------------------------------------------------
-    private String getTodaysDate() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        month += 1;
-        int day = cal.get(Calendar.DATE);
-        return makeDateString(day, month, year);
-    }
-
-    private void initDatePicker() {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                String date = makeDateString(dayOfMonth, month, year);
-                dateBtn.setText(date);
-            }
-        };
-
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DATE);
-
-        int style = AlertDialog.THEME_HOLO_LIGHT;
-
-        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
-    }
-
-    private String makeDateString(int dayOfMonth, int month, int year) {
-        return getMonthFormat(month) + " " + dayOfMonth + " " + year;
-    }
-
-    private String getMonthFormat(int month) {
-        if(month == 1)
-            return "JAN";
-        if(month == 2)
-            return "FEB";
-        if(month == 3)
-            return "MAR";
-        if(month == 4)
-            return "APR";
-        if(month == 5)
-            return "MAY";
-        if(month == 6)
-            return "JUN";
-        if(month == 7)
-            return "JUL";
-        if(month == 8)
-            return "AUG";
-        if(month == 9)
-            return "SEP";
-        if(month == 10)
-            return "OCT";
-        if(month == 11)
-            return "NOV";
-        if(month == 12)
-            return "DEC";
-
-        return "JAN";
-
-    }
-
-    public void openDatePicker(View view) {
-        datePickerDialog.show();
-    }
-
-    //----------------------------------------------------------------------
-
-    //--------PICTURE-------------------------------------------------------
 
     private void askCameraPermission() {
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
@@ -216,6 +113,13 @@ public class AddMovies extends AppCompatActivity {
             }
         }
     }
+
+//    private void openCamera() {
+//        //Toast.makeText(this, "Camera Opened", Toast.LENGTH_SHORT).show();
+//
+//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -243,7 +147,7 @@ public class AddMovies extends AppCompatActivity {
         }else{
             super.onActivityResult(requestCode, resultCode, data);
         }
-
+    
 
     }
 
@@ -255,8 +159,8 @@ public class AddMovies extends AppCompatActivity {
                 refImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Toast.makeText(AddMovies.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                        movieUri = uri.toString();
+                        Toast.makeText(Camera.this, "Uploaded", Toast.LENGTH_SHORT).show();
+
                         Picasso.get().load(uri).into(image);
                     }
                 });
@@ -264,7 +168,7 @@ public class AddMovies extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddMovies.this, "Failed to Upload", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Camera.this, "Failed to Upload", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -314,6 +218,5 @@ public class AddMovies extends AppCompatActivity {
             }
         }
     }
-    //----------------------------------------------------------------------
 
 }

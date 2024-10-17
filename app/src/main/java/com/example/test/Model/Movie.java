@@ -6,13 +6,23 @@ public class Movie {
     private String MovieDesc;
     private String MovieReleaseDate;
     private String MovieGenre;
+    private String MoviePic;
 
-    public Movie(String id, String movieName, String movieDesc, String movieReleaseDate, String movieGenre) {
+    public Movie(String id, String movieName, String movieDesc, String movieReleaseDate, String movieGenre, String moviePic) {
         this.id = id;
         MovieName = movieName;
         MovieDesc = movieDesc;
         MovieReleaseDate = movieReleaseDate;
         MovieGenre = movieGenre;
+        MoviePic = moviePic;
+    }
+
+    public String getMoviePic() {
+        return MoviePic;
+    }
+
+    public void setMoviePic(String moviePic) {
+        MoviePic = moviePic;
     }
 
     public String getId() {

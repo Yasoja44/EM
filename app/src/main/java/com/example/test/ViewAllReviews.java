@@ -22,6 +22,7 @@ import com.example.test.ViewHolder.MovieAllViewHolder;
 import com.example.test.ViewHolder.ReviewAllViewHolder;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,6 +45,7 @@ public class ViewAllReviews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_reviews);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         search=findViewById(R.id.search_reviews_all);
         recyclerView=findViewById(R.id.card_recycleView_reviews_all);

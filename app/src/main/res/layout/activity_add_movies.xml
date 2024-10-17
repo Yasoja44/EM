@@ -62,11 +62,35 @@
         android:inputType="textPersonName"
         android:hint="Genre" />
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginLeft="140dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/image"/>
+
+    <ImageButton
+        android:id="@+id/cameraButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="170dp"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <ImageButton
+        android:id="@+id/galleryButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="170dp"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+
+
     <Button
         android:id="@+id/add_movie_button"
         android:layout_width="350dp"
         android:layout_height="70dp"
         android:layout_marginLeft="15dp"
-        android:text="Add" />
+        android:text="ADD" />
 
 </LinearLayout>

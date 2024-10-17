@@ -18,6 +18,7 @@ import com.example.test.Filters.FilterViewMovie;
 import com.example.test.Model.Movie;
 import com.example.test.R;
 import com.example.test.ViewAllReviews;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -48,11 +49,12 @@ public class MovieAllViewHolder extends RecyclerView.Adapter<MovieAllViewHolder.
         String movieDesc=movie1.getMovieDesc();
         String movieReleaseDate=movie1.getMovieReleaseDate();
         String movieGenre=movie1.getMovieGenre();
+        String moviePic=movie1.getMoviePic();
 
         holder.txtMovieName_all.setText(movieName);
         holder.txtMovieGenre_all.setText(movieGenre);
         holder.txtMovieReleaseDate_all.setText(movieReleaseDate);
-        //Picasso.get().load(itemImage).into(holder.imageItem_all);
+        Picasso.get().load(moviePic).into(holder.imageMovie_all);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,14 +82,14 @@ public class MovieAllViewHolder extends RecyclerView.Adapter<MovieAllViewHolder.
 
     class MovieHolder extends RecyclerView.ViewHolder{
         TextView txtMovieName_all,txtMovieGenre_all,txtMovieReleaseDate_all;
-        //ImageView imageItem_all;
+        ImageView imageMovie_all;
 
         public MovieHolder(@NonNull View itemView) {
             super(itemView);
 
             txtMovieName_all=itemView.findViewById(R.id.movie_name);
             txtMovieGenre_all=itemView.findViewById(R.id.movie_genre);
-            //imageItem_all=itemView.findViewById(R.id.item_image);
+            imageMovie_all=itemView.findViewById(R.id.item_image);
             txtMovieReleaseDate_all=itemView.findViewById(R.id.movie_release_date);
 
         }

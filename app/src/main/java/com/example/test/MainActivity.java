@@ -17,13 +17,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7;
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference myRef = database.getReference("message");
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         btn5 = (Button)findViewById(R.id.button5);
         btn6 = (Button)findViewById(R.id.button6);
         btn7 = (Button)findViewById(R.id.button7);
+        btn8 = (Button)findViewById(R.id.button8);
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ViewAllReviews.class);
+                startActivity(intent);
+            }
+        });
+        btn8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Camera.class);
                 startActivity(intent);
             }
         });

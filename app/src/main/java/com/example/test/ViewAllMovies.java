@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.test.Model.Movie;
 import com.example.test.ViewHolder.MovieAllViewHolder;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,6 +37,7 @@ public class ViewAllMovies extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_movies);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         search=findViewById(R.id.search_movies_all);
         recyclerView=findViewById(R.id.card_recycleView_movies_all);
@@ -78,8 +80,9 @@ public class ViewAllMovies extends AppCompatActivity {
                             String MovieDesc=ds.getString("MovieDesc");
                             String MovieReleaseDate=ds.getString("MovieReleaseDate");
                             String MovieGenre=ds.getString("MovieGenre");
+                            String MoviePic=ds.getString("MoviePic");
 
-                            Movie movie = new Movie(id,movieName,MovieDesc,MovieReleaseDate,MovieGenre);
+                            Movie movie = new Movie(id,movieName,MovieDesc,MovieReleaseDate,MovieGenre,MoviePic);
                             movieAllList.add(movie);
 
                         }
