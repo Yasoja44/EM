@@ -7,13 +7,23 @@ public class Review {
     private String MovieId;
     private String ReviewDesc;
     private double ReviewRating;
+    private String ReviewPic;
 
-    public Review(String id, String userId, String movieId, String reviewDesc, double reviewRating) {
+    public Review(String id, String userId, String movieId, String reviewDesc, double reviewRating, String reviewPic) {
         this.id = id;
         UserId = userId;
         MovieId = movieId;
         ReviewDesc = reviewDesc;
         ReviewRating = reviewRating;
+        ReviewPic = reviewPic;
+    }
+
+    public String getReviewPic() {
+        return ReviewPic;
+    }
+
+    public void setReviewPic(String reviewPic) {
+        ReviewPic = reviewPic;
     }
 
     public String getUserId() {

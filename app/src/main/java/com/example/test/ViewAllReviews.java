@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,7 +22,9 @@ import com.example.test.Model.Movie;
 import com.example.test.Model.Review;
 import com.example.test.ViewHolder.MovieAllViewHolder;
 import com.example.test.ViewHolder.ReviewAllViewHolder;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,7 +32,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ViewAllReviews extends AppCompatActivity {
 
@@ -38,8 +44,9 @@ public class ViewAllReviews extends AppCompatActivity {
     private ReviewAllViewHolder reviewViewHolder;
     private TextView textView;
     private EditText search;
-    private String movieId;
+    private String movieId, moviePic;
     FloatingActionButton addReviewBtn;
+    Map<String, String> usersMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class ViewAllReviews extends AppCompatActivity {
         firestore=FirebaseFirestore.getInstance();
         textView=findViewById(R.id.search_reviews_all);
         addReviewBtn = findViewById(R.id.float_add_review);
+        usersMap = new HashMap<>();
 
         reviewAllList=new ArrayList<>();
 
@@ -79,6 +87,25 @@ public class ViewAllReviews extends AppCompatActivity {
         });
 
         movieId = getIntent().getStringExtra("movieId");
+        moviePic = getIntent().getStringExtra("moviePic");
+
+        firestore.collection("Users").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<DocumentSnapshot> list= task.getResult().getDocuments();
+                        for(DocumentSnapshot ds:list){
+
+                            String ReviewUserId=ds.getId();
+                            String ReviewUsername=ds.getString("FirstName");
+                            //Toast.makeText(ReviewAllViewHolder.this, ReviewUserId, Toast.LENGTH_SHORT).show();
+
+                            usersMap.put(ReviewUserId, ReviewUsername);
+                        }
+                    }
+                });
 
         firestore.collection("Reviews").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -88,13 +115,14 @@ public class ViewAllReviews extends AppCompatActivity {
                         for(DocumentSnapshot ds:list){
                             if (movieId.equals(ds.getString("MovieId"))){
                                 String id =ds.getId();
-                                String ReviewUser=ds.getString("UserId");
+                                String ReviewUser=usersMap.get(ds.getString("UserId"));
                                 String ReviewMovie=ds.getString("MovieId");
                                 String ReviewDesc=ds.getString("ReviewDesc");
                                 double ReviewRating=ds.getDouble("ReviewRating");
+                                String ReviewPic=moviePic;
 
 
-                                Review review = new Review(id,ReviewUser,ReviewMovie,ReviewDesc,ReviewRating);
+                                Review review = new Review(id,ReviewUser,ReviewMovie,ReviewDesc,ReviewRating,ReviewPic);
                                 reviewAllList.add(review);
                             }
 
