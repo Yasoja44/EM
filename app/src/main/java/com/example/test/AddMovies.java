@@ -34,6 +34,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -65,6 +67,7 @@ public class AddMovies extends AppCompatActivity {
     public static final int REQUEST_CODE_CAMERA = 2;
     private static final int REQUEST_GALLERY = 5;
     String movieUri;
+    FloatingActionButton logoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,16 @@ public class AddMovies extends AppCompatActivity {
         image = findViewById(R.id.image);
         btnPic = findViewById(R.id.cameraButton);
         btnGallery = findViewById(R.id.galleryButton);
+        logoutBtn = findViewById(R.id.float_logout);
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(AddMovies.this, Login.class);
+                startActivity(intent);
+            }
+        });
 
         addMovieBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +110,10 @@ public class AddMovies extends AppCompatActivity {
                 movieInfo.put("MoviePic", movieUri);
 
                 df.add(movieInfo);
+                Toast.makeText(AddMovies.this, "Movie Added", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(AddMovies.this, ViewAllMovies.class);
+                startActivity(intent);
             }
         });
 
@@ -277,10 +294,8 @@ public class AddMovies extends AppCompatActivity {
 
 
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        //File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -295,16 +310,13 @@ public class AddMovies extends AppCompatActivity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
 
             }
-            // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",

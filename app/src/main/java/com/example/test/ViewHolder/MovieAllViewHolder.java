@@ -61,6 +61,7 @@ public class MovieAllViewHolder extends RecyclerView.Adapter<MovieAllViewHolder.
             public void onClick(View view) {
                 Intent intent = new Intent(context, ViewAllReviews.class);
                 intent.putExtra("movieId", movie1.getId());
+                intent.putExtra("movieName", movie1.getMovieName());
                 intent.putExtra("moviePic", movie1.getMoviePic());
                 context.startActivity(intent);
             }

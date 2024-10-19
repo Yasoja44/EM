@@ -48,6 +48,40 @@
                     android:layout_height="match_parent">
                 </androidx.recyclerview.widget.RecyclerView>
             </ScrollView>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/float_add_movie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+
+                    android:foreground="@android:drawable/ic_input_add"
+                    app:backgroundTint="@color/backgroundBottomColor"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/float_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+
+                    android:foreground="@drawable/ic_lock"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
+                    app:backgroundTint="@color/backgroundBottomColor" />
+
+            </FrameLayout>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

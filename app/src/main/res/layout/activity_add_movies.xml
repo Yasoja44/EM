@@ -93,4 +93,21 @@
         android:layout_marginLeft="15dp"
         android:text="ADD" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/float_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+
+            android:foreground="@drawable/ic_lock"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            app:backgroundTint="@color/backgroundBottomColor" />
+
+    </FrameLayout>
+
 </LinearLayout>

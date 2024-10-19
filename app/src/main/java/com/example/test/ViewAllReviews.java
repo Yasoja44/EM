@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,8 +47,10 @@ public class ViewAllReviews extends AppCompatActivity {
     private TextView textView;
     private EditText search;
     private String movieId, moviePic;
-    FloatingActionButton addReviewBtn;
+    private RatingBar ratingBar;
+    FloatingActionButton addReviewBtn, logoutBtn;
     Map<String, String> usersMap;
+    double ratingCount, totalRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +65,20 @@ public class ViewAllReviews extends AppCompatActivity {
         firestore=FirebaseFirestore.getInstance();
         textView=findViewById(R.id.search_reviews_all);
         addReviewBtn = findViewById(R.id.float_add_review);
+        ratingBar = findViewById(R.id.rating_total);
         usersMap = new HashMap<>();
+        logoutBtn = findViewById(R.id.float_logout);
 
         reviewAllList=new ArrayList<>();
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(ViewAllReviews.this, Login.class);
+                startActivity(intent);
+            }
+        });
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -104,34 +119,44 @@ public class ViewAllReviews extends AppCompatActivity {
 
                             usersMap.put(ReviewUserId, ReviewUsername);
                         }
+                        firestore.collection("Reviews").get()
+                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+
+
+
+                                        ratingCount = 0;
+                                        totalRating = 0;
+                                        List<DocumentSnapshot> list=queryDocumentSnapshots.getDocuments();
+                                        for(DocumentSnapshot ds:list){
+                                            if (movieId.equals(ds.getString("MovieId"))){
+                                                String id =ds.getId();
+                                                String ReviewUser=usersMap.get(ds.getString("UserId"));
+                                                String ReviewMovie=ds.getString("MovieId");
+                                                String ReviewDesc=ds.getString("ReviewDesc");
+                                                double ReviewRating=ds.getDouble("ReviewRating");
+                                                String ReviewPic=moviePic;
+
+                                                ratingCount += 1;
+                                                totalRating += ReviewRating;
+                                                Review review = new Review(id,ReviewUser,ReviewMovie,ReviewDesc,ReviewRating,ReviewPic);
+                                                reviewAllList.add(review);
+                                            }
+
+
+                                        }
+                                        ratingBar.setRating((float) (totalRating/ratingCount));
+                                        reviewViewHolder = new ReviewAllViewHolder(ViewAllReviews.this, reviewAllList);
+                                        recyclerView.setAdapter(reviewViewHolder);
+                                    }
+                                });
+
                     }
                 });
 
-        firestore.collection("Reviews").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<DocumentSnapshot> list=queryDocumentSnapshots.getDocuments();
-                        for(DocumentSnapshot ds:list){
-                            if (movieId.equals(ds.getString("MovieId"))){
-                                String id =ds.getId();
-                                String ReviewUser=usersMap.get(ds.getString("UserId"));
-                                String ReviewMovie=ds.getString("MovieId");
-                                String ReviewDesc=ds.getString("ReviewDesc");
-                                double ReviewRating=ds.getDouble("ReviewRating");
-                                String ReviewPic=moviePic;
 
-
-                                Review review = new Review(id,ReviewUser,ReviewMovie,ReviewDesc,ReviewRating,ReviewPic);
-                                reviewAllList.add(review);
-                            }
-
-
-                        }
-                        reviewViewHolder = new ReviewAllViewHolder(ViewAllReviews.this, reviewAllList);
-                        recyclerView.setAdapter(reviewViewHolder);
-                    }
-                });
 
         addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override

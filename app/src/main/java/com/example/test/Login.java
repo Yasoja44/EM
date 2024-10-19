@@ -188,7 +188,7 @@ public class Login extends AppCompatActivity {
                 if (documentSnapshot.getString("isUser") != null) {
                     //user users
                     //Intent i = new Intent(getApplicationContext(), Dashboard.class);
-                    Toast.makeText(Login.this, "User", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Logged In", Toast.LENGTH_SHORT).show();
                     //startActivity(i);
                     //finish();
                 }
@@ -235,6 +235,7 @@ public class Login extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Toast.makeText(this, "Already Logged In!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
 

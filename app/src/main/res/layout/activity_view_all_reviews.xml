@@ -35,12 +35,50 @@
                 android:drawableStart="@drawable/search_img"
                 android:hint="Search"
                 android:padding="15dp" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@+id/search_reviews_all"
+                android:id="@+id/card_order_item">
 
+                <LinearLayout
+                    android:id="@+id/layer1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@+id/layer"
+                    android:orientation="horizontal">
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:text="Total Rating: "-->
+<!--                        android:textSize="23dp"-->
+<!--                        android:textColor="@color/black"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/rating_total"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:text="5:"-->
+<!--                        android:layout_marginLeft="2dp"-->
+<!--                        android:textSize="23dp"-->
+<!--                        android:textColor="@color/red"/>-->
+                    <RatingBar
+                        android:id="@+id/rating_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize=".5"
+                        />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/search_reviews_all"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="100dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/card_recycleView_reviews_all"
@@ -64,6 +102,23 @@
                     android:paddingEnd="16dp"
                     android:paddingBottom="16dp"
                     />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/float_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+
+                    android:foreground="@drawable/ic_lock"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
+                    app:backgroundTint="@color/backgroundBottomColor" />
 
             </FrameLayout>
 
