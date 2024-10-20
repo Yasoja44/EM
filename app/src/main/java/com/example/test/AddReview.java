@@ -1,7 +1,12 @@
 package com.example.test;
 
-import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,12 +14,9 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,12 +33,13 @@ import java.util.Map;
 
 public class AddReview extends AppCompatActivity {
 
+    private static final String CHANNEL_ID = "1010";
     RatingBar ratingBar;
     EditText reviewDesc, reviewRating;
     Button addReviewBtn;
     FirebaseFirestore fStory;
     FirebaseAuth fAuth;
-    private String movieId;
+    private String movieId, movieName;
     FloatingActionButton logoutBtn;
 
     @Override
@@ -52,6 +55,7 @@ public class AddReview extends AppCompatActivity {
         fStory = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         movieId = getIntent().getStringExtra("movieId");
+        movieName = getIntent().getStringExtra("movieName");
         logoutBtn = findViewById(R.id.float_logout);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +84,7 @@ public class AddReview extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(AddReview.this, "Review Added", Toast.LENGTH_SHORT).show();
+                        sendNotification(movieName);
                         Intent intent = new Intent(AddReview.this, ViewAllMovies.class);
                         startActivity(intent);
                     }
@@ -93,4 +98,35 @@ public class AddReview extends AppCompatActivity {
         });
 
     }
+
+    private void sendNotification(String Name) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID)
+                .setSmallIcon(R.drawable.baseline_notifications_active_24)
+                .setContentTitle("Review")
+                .setContentText("Review Added for Movie : " + Name)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        Intent intent = new Intent(this, AddReview.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE);
+        builder.setContentIntent(contentIntent);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = manager.getNotificationChannel(CHANNEL_ID);
+            if (notificationChannel == null){
+                int importance = NotificationManager.IMPORTANCE_HIGH;
+                notificationChannel = new NotificationChannel(CHANNEL_ID, "Description", importance);
+                notificationChannel.setLightColor(Color.BLUE);
+                notificationChannel.enableVibration(true);
+                manager.createNotificationChannel(notificationChannel);
+            }
+        }
+
+
+        manager.notify(0,builder.build());
+
+    }
+
+
 }

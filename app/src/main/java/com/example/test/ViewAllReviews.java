@@ -46,7 +46,7 @@ public class ViewAllReviews extends AppCompatActivity {
     private ReviewAllViewHolder reviewViewHolder;
     private TextView textView;
     private EditText search;
-    private String movieId, moviePic;
+    private String movieId, moviePic, movieName;
     private RatingBar ratingBar;
     FloatingActionButton addReviewBtn, logoutBtn;
     Map<String, String> usersMap;
@@ -68,6 +68,7 @@ public class ViewAllReviews extends AppCompatActivity {
         ratingBar = findViewById(R.id.rating_total);
         usersMap = new HashMap<>();
         logoutBtn = findViewById(R.id.float_logout);
+        textView = findViewById(R.id.review_view_all);
 
         reviewAllList=new ArrayList<>();
 
@@ -103,6 +104,9 @@ public class ViewAllReviews extends AppCompatActivity {
 
         movieId = getIntent().getStringExtra("movieId");
         moviePic = getIntent().getStringExtra("moviePic");
+        movieName  = getIntent().getStringExtra("movieName");
+
+        textView.setText(movieName + ": Reviews");
 
         firestore.collection("Users").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -163,6 +167,7 @@ public class ViewAllReviews extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ViewAllReviews.this, AddReview.class);
                 intent.putExtra("movieId", movieId);
+                intent.putExtra("movieName", movieName);
                 startActivity(intent);
             }
         });
