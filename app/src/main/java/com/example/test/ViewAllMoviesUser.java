@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.test.Model.Movie;
 import com.example.test.ViewHolder.MovieAllViewHolder;
+import com.example.test.ViewHolder.MovieAllViewHolderUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -36,11 +37,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ViewAllMovies extends AppCompatActivity {
+public class ViewAllMoviesUser extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FirebaseFirestore firestore;
     private ArrayList<Movie> movieAllList;
-    private MovieAllViewHolder movieViewHolder;
+    private MovieAllViewHolderUser movieViewHolder;
     private TextView textView;
     private EditText search;
     FloatingActionButton addMovieBtn,logoutBtn;
@@ -50,7 +51,7 @@ public class ViewAllMovies extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_all_movies);
+        setContentView(R.layout.activity_view_all_movies_user);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         search=findViewById(R.id.search_movies_all);
@@ -70,7 +71,7 @@ public class ViewAllMovies extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(ViewAllMovies.this, Login.class);
+                Intent intent = new Intent(ViewAllMoviesUser.this, Login.class);
                 startActivity(intent);
             }
         });
@@ -112,11 +113,11 @@ public class ViewAllMovies extends AppCompatActivity {
 //
 //                            usersMap.put(userId, isUsername);
 //                        }
-//                        if (usersMap.get(currentUser.getUid()).equals("1")){
+//                        if (usersMap.get(currentUser.getUid()).equals("0")){
 //
-                            addMovieBtn.setVisibility(View.VISIBLE);
+//                            addMovieBtn.setVisibility(View.VISIBLE);
 //                        }else{
-//                             addMovieBtn.setVisibility(View.INVISIBLE);
+                            addMovieBtn.setVisibility(View.INVISIBLE);
 //                        }
 //                    }
 //                });
@@ -142,7 +143,7 @@ public class ViewAllMovies extends AppCompatActivity {
                             movieAllList.add(movie);
 
                         }
-                        movieViewHolder = new MovieAllViewHolder(ViewAllMovies.this, movieAllList);
+                        movieViewHolder = new MovieAllViewHolderUser(ViewAllMoviesUser.this, movieAllList);
                         recyclerView.setAdapter(movieViewHolder);
                     }
                 });
@@ -150,7 +151,7 @@ public class ViewAllMovies extends AppCompatActivity {
         addMovieBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewAllMovies.this, AddMovies.class);
+                Intent intent = new Intent(ViewAllMoviesUser.this, AddMovies.class);
                 startActivity(intent);
             }
         });

@@ -133,8 +133,8 @@ public class Login extends AppCompatActivity {
                     fAuth.signInWithEmailAndPassword(Email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
-                            Toast.makeText(Login.this, "Logging Successfully", Toast.LENGTH_SHORT).show();
                             checkUserAccessLevel(authResult.getUser().getUid());
+
                             //check the remember me checked------------------------------------------------------------------------------------------
                             if(remember.isChecked()){
                                 editor.putBoolean("SaveLogin",true);
@@ -180,16 +180,18 @@ public class Login extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG", "onSuccess" + documentSnapshot.getData());
                 //identity user access level
-                if (documentSnapshot.getString("isAdmin") != null) {
+                //Toast.makeText(Login.this, documentSnapshot.getString("isUser"), Toast.LENGTH_LONG).show();
+                if (documentSnapshot.getString("isUser").equals("0")) {
                     //user admin
-                    //startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                    Toast.makeText(Login.this, "Logged In as Admin", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), dashboard.class));
                     //finish();
-                }
-                if (documentSnapshot.getString("isUser") != null) {
+                }else{
+                //if (documentSnapshot.getString("isUser").equals("1")) {
                     //user users
                     //Intent i = new Intent(getApplicationContext(), Dashboard.class);
                     Toast.makeText(Login.this, "Logged In", Toast.LENGTH_SHORT).show();
-                    //startActivity(i);
+                    startActivity(new Intent(getApplicationContext(), ViewAllMoviesUser.class));
                     //finish();
                 }
             }
@@ -234,11 +236,11 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            Toast.makeText(this, "Already Logged In!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-
-        }
+//        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+//            Toast.makeText(this, "Already Logged In!", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(getApplicationContext(), ViewAllMovies.class));
+//            finish();
+//
+//        }
     }//end validation-------------------------------------------------------------------------------
 }

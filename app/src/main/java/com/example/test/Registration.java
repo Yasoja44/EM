@@ -191,7 +191,6 @@ public class Registration extends AppCompatActivity {
                             userInfo.put("Email", Email.getText().toString());
                             userInfo.put("Mobile", mobile.getText().toString());
                             userInfo.put("Password", password.getText().toString());
-                            //specify if the user is admin//
 
                             userInfo.put("isUser", "1");
                             df.set(userInfo);
@@ -274,65 +273,65 @@ public class Registration extends AppCompatActivity {
             }
             return valid;
         }
-//        else if (textFiled == password) {
-//            String val = password.getText().toString();
-//
-//            String passwordVal = "^" +
-//                    //"(?=.*[0-9])" +         //at least 1 digit
-//                    //"(?=.*[a-z])" +         //at least 1 lower case letter
-//                    //"(?=.*[A-Z])" +         //at least 1 upper case letter
-//                    "(?=.*[a-zA-Z])" +      //any letter
-//                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
-//                    "(?=\\S+$)" +           //no white spaces
-//                    ".{4,}" +               //at least 4 characters
-//                    "$";
-//
-//            if (val.isEmpty()) {
-//                password.setError("Field cannot be empty");
-//                valid = false;
-//            } else if (!val.matches(passwordVal)) {
-//                password.setError("Password is too weak");
-//                valid = false;
-//            } else if (val.length() < 6) {
-//                password.setError("At least 6 characters");
-//                valid = false;
-//            } else {
-//                password.setError(null);
-//                valid = true;
-//            }
-//            return valid;
-//        } else if (textFiled == retypePassword) {
-//            String val = retypePassword.getText().toString();
-//            String val2 = password.getText().toString();
-//
-//            String passwordVal = "^" +
-//                    //"(?=.*[0-9])" +         //at least 1 digit
-//                    //"(?=.*[a-z])" +         //at least 1 lower case letter
-//                    //"(?=.*[A-Z])" +         //at least 1 upper case letter
-//                    "(?=.*[a-zA-Z])" +      //any letter
-//                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
-//                    "(?=\\S+$)" +           //no white spaces
-//                    ".{4,}" +               //at least 4 characters
-//                    "$";
-//
-//            if (val.isEmpty()) {
-//                retypePassword.setError("Field cannot be empty");
-//                valid = false;
-//            } else if (!val.matches(passwordVal)) {
-//                retypePassword.setError("Password is too weak");
-//                valid = false;
-//            } else if (val.charAt(0)=='0') {
-//                retypePassword.setError("At first 0 characters");
-//                valid = false;
-//            } else if (!val2.equals(val)) {
-//                retypePassword.setError("Does to match the password");
-//                valid = false;
-//            } else {
-//                retypePassword.setError(null);
-//                valid = true;
-//            }
-//            return valid;
-//        }
+        /*else if (textFiled == password) {
+            String val = password.getText().toString();
+
+            String passwordVal = "^" +
+                    //"(?=.*[0-9])" +         //at least 1 digit
+                    //"(?=.*[a-z])" +         //at least 1 lower case letter
+                    //"(?=.*[A-Z])" +         //at least 1 upper case letter
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                    "(?=\\S+$)" +           //no white spaces
+                    ".{4,}" +               //at least 4 characters
+                    "$";
+
+            if (val.isEmpty()) {
+                password.setError("Field cannot be empty");
+                valid = false;
+            } else if (!val.matches(passwordVal)) {
+                password.setError("Password is too weak");
+                valid = false;
+            } else if (val.length() < 6) {
+                password.setError("At least 6 characters");
+                valid = false;
+            } else {
+                password.setError(null);
+                valid = true;
+            }
+            return valid;
+        } else if (textFiled == retypePassword) {
+            String val = retypePassword.getText().toString();
+            String val2 = password.getText().toString();
+
+            String passwordVal = "^" +
+                    //"(?=.*[0-9])" +         //at least 1 digit
+                    //"(?=.*[a-z])" +         //at least 1 lower case letter
+                    //"(?=.*[A-Z])" +         //at least 1 upper case letter
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                    "(?=\\S+$)" +           //no white spaces
+                    ".{4,}" +               //at least 4 characters
+                    "$";
+
+            if (val.isEmpty()) {
+                retypePassword.setError("Field cannot be empty");
+                valid = false;
+            } else if (!val.matches(passwordVal)) {
+                retypePassword.setError("Password is too weak");
+                valid = false;
+            } else if (val.charAt(0)=='0') {
+                retypePassword.setError("At first 0 characters");
+                valid = false;
+            } else if (!val2.equals(val)) {
+                retypePassword.setError("Does to match the password");
+                valid = false;
+            } else {
+                retypePassword.setError(null);
+                valid = true;
+            }
+            return valid;
+        }*/
 
 
         return valid;

@@ -50,13 +50,6 @@
         android:layout_marginLeft="320dp"
         app:srcCompat="@drawable/next" />
 
-    <ImageButton
-        android:id="@+id/btnDelete"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="300dp"
-        android:layout_marginTop="80dp"
-        android:foreground="@android:drawable/ic_delete"
-        android:text="Delete" />
+
 
 </androidx.cardview.widget.CardView>

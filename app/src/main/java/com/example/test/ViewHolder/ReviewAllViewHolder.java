@@ -1,6 +1,7 @@
 package com.example.test.ViewHolder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.test.Model.Review;
 import com.example.test.R;
 import com.example.test.ViewAllMovies;
 import com.example.test.ViewAllReviews;
+import com.example.test.ViewReview;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -77,6 +79,19 @@ public class ReviewAllViewHolder extends RecyclerView.Adapter<ReviewAllViewHolde
         holder.txtReviewDesc_all.setText(reviewDesc);
         holder.txtReviewRating_all.setText(reviewRating);
         Picasso.get().load(reviewPic).into(holder.imageItem_all);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ViewReview.class);
+                intent.putExtra("reviewUserId", reviewUserId);
+                intent.putExtra("reviewMovieId", reviewMovieId);
+                intent.putExtra("reviewDesc", reviewDesc);
+                intent.putExtra("reviewRating", reviewRating);
+                intent.putExtra("reviewPic", reviewPic);
+                context.startActivity(intent);
+            }
+        });
 
 
     }
