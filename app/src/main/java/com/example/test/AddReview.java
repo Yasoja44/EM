@@ -85,7 +85,7 @@ public class AddReview extends AppCompatActivity {
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(AddReview.this, "Review Added", Toast.LENGTH_SHORT).show();
                         sendNotification(movieName);
-                        Intent intent = new Intent(AddReview.this, ViewAllMovies.class);
+                        Intent intent = new Intent(AddReview.this, ViewAllMoviesUser.class);
                         startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

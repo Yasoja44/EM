@@ -36,7 +36,7 @@ public class ViewReview extends AppCompatActivity {
         //movieName.setText(getIntent().getStringExtra("reviewMovieId"));
         reviewerName.setText(getIntent().getStringExtra("reviewUserId"));
         reviewDesc.setText(getIntent().getStringExtra("reviewDesc"));
-        Toast.makeText(this, String.valueOf(Float.parseFloat(getIntent().getStringExtra("reviewRating"))), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, String.valueOf(Float.parseFloat(getIntent().getStringExtra("reviewRating"))), Toast.LENGTH_SHORT).show();
         ratingBar.setRating( Float.parseFloat(getIntent().getStringExtra("reviewRating")) );
 
 
